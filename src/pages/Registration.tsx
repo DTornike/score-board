@@ -1,11 +1,9 @@
-import { useState } from "react";
+import { PLAYERS, useGameState } from "../state/game-state.tsx";
 import { styled } from "styled-components";
 import { Input, Layout, Button } from "../components";
-import { Player } from "../models";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
-  align-items: center;
   gap: 24px;
   display: flex;
   align-items: center;
@@ -21,9 +19,6 @@ const RegistrationForm = styled.div`
   border-radius: 5px;
   border: 1px solid rgba(249, 100, 95, 0.3);
   background: rgba(250, 250, 250, 0.8);
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -56,25 +51,17 @@ const Label = styled.p`
   text-align: center;
 `;
 
-function PlayerRegistration() {
+const Registration = () => {
   const navigate = useNavigate();
 
-  const [playerOne, setPlayerOne] = useState<Player>({
-    name: "",
-    imgUrl: "",
-  });
-
-  const [playerTwo, setPlayerTwo] = useState<Player>({
-    name: "",
-    imgUrl: "",
-  });
+  const { players, updatePlayerName } = useGameState();
 
   function handleSubmit() {
-    const data = { playerOne, playerTwo };
-
-    localStorage.setItem("playerRegistrationData", JSON.stringify(data));
     navigate("/score_board");
   }
+
+  const playerOne = players[PLAYERS.PLAYER_ONE];
+  const playerTwo = players[PLAYERS.PLAYER_TWO];
 
   const arePlayersReady =
     playerOne.name.length > 2 && playerTwo.name.length > 2;
@@ -90,10 +77,7 @@ function PlayerRegistration() {
                 <Input
                   value={playerOne.name}
                   onChange={(value) => {
-                    setPlayerOne({
-                      name: value,
-                      imgUrl: "",
-                    });
+                    updatePlayerName(PLAYERS.PLAYER_ONE, value);
                   }}
                 />
               </InputWrapper>
@@ -102,10 +86,7 @@ function PlayerRegistration() {
                 <Input
                   value={playerTwo.name}
                   onChange={(value) => {
-                    setPlayerTwo({
-                      name: value,
-                      imgUrl: "",
-                    });
+                    updatePlayerName(PLAYERS.PLAYER_TWO, value);
                   }}
                 />
               </InputWrapper>
@@ -118,6 +99,6 @@ function PlayerRegistration() {
       </div>
     </Layout>
   );
-}
+};
 
-export default PlayerRegistration;
+export default Registration;

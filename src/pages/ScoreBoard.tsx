@@ -1,7 +1,6 @@
-import { useState } from "react";
 import { styled } from "styled-components";
-import { Layout } from "../components";
-import { Button } from "antd";
+import { Button, Layout } from "../components";
+import { PLAYERS, useGameState } from "../state/game-state.tsx";
 
 const Container = styled.div<{ active?: boolean }>`
   padding: 24px;
@@ -35,10 +34,8 @@ const MainScoreCard = styled.div<{ color?: string }>`
   border-radius: 10px;
   border: 1px solid ${({ color }) => color};
   background: #fff;
-  box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 0 4px 0 rgba(0, 0, 0, 0.25);
   color: #404040;
-  leading-trim: both;
-  text-edge: cap;
   font-size: 180px;
   font-weight: 700;
   display: flex;
@@ -71,21 +68,14 @@ const Wrapper = styled.div`
 `;
 
 function ScoreBoard() {
-  const [playerOneScore, setPlayerOneScore] = useState(0);
-  const [playerTwoScore, setPlayerTwoScore] = useState(0);
-  const [playerOneWin, setPlayerOneWin] = useState(0);
-  const [playerTwoWin, setPlayerTwoWin] = useState(0);
+  const { players, updateScore } = useGameState();
 
-  const players = JSON.parse(
-    localStorage.getItem("playerRegistrationData") || ""
-  );
-
-  const handleIncrement = (params: number) => {
-    if (params == 1) {
-      setPlayerOneScore(playerOneScore + 1);
-    } else {
-      setPlayerTwoScore(playerTwoScore + 1);
-    }
+  const playerOne = players[PLAYERS.PLAYER_ONE];
+  const playerTwo = players[PLAYERS.PLAYER_TWO];
+  console.log(playerOne);
+  console.log(playerTwo);
+  const handleIncrement = (playerIndex: PLAYERS) => {
+    updateScore(playerIndex, players[playerIndex]?.stats?.score + 1);
   };
 
   return (
@@ -96,32 +86,32 @@ function ScoreBoard() {
             <div style={{ display: "flex", gap: "36px" }}>
               <div>
                 <Title />
-                <ScoreCard>{playerOneWin}</ScoreCard>
+                <ScoreCard>{playerOne?.stats?.set}</ScoreCard>
               </div>
               <div>
-                <Title>{players?.playerOne?.name}</Title>
+                <Title>{playerOne?.name}</Title>
                 <MainScoreCard color="#77A1CA">
-                  <ScoreCardLine /> <div>{playerOneScore}</div>
+                  <ScoreCardLine /> <div>{playerOne?.stats?.score}</div>
                 </MainScoreCard>
-                {/* <Button type="primary" onClick={() => handleIncrement(1)}>
+                <Button onClick={() => handleIncrement(PLAYERS.PLAYER_ONE)}>
                   +
-                </Button> */}
+                </Button>
               </div>
             </div>
             <div style={{ display: "flex", gap: "36px" }}>
               <div>
-                <Title>{players?.playerTwo?.name}</Title>
+                <Title>{playerTwo?.name}</Title>
                 <MainScoreCard color="#A5CA77">
                   <ScoreCardLine />
-                  <div>{playerTwoScore}</div>
+                  <div>{playerTwo?.stats?.score}</div>
                 </MainScoreCard>
-                {/* <Button type="primary" onClick={() => handleIncrement(2)}>
+                <Button onClick={() => handleIncrement(PLAYERS.PLAYER_TWO)}>
                   +
-                </Button> */}
+                </Button>
               </div>
               <div>
                 <Title />
-                <ScoreCard>{playerTwoWin}</ScoreCard>
+                <ScoreCard>{playerTwo?.stats?.set}</ScoreCard>
               </div>
             </div>
           </Wrapper>
