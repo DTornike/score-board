@@ -1,12 +1,12 @@
 import { Route, Routes } from "react-router-dom";
-import ScoreBoard from "./pages/scoreBoard";
-import PlayerRegistration from "./pages/playerRegistration";
+import ScoreBoard from "./pages/ScoreBoard.tsx";
+import Registration from "./pages/Registration.tsx";
 
 function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={<PlayerRegistration />}></Route>
+        <Route path="/" element={<Registration />}></Route>
         <Route path="/score_board" element={<ScoreBoard />}></Route>
       </Routes>
     </div>
