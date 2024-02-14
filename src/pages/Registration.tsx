@@ -1,7 +1,6 @@
-import { useState } from "react";
+import { PLAYERS, useGameState } from "../state/game-state.tsx";
 import { styled } from "styled-components";
 import { Input, Layout, Button } from "../components";
-import { Player } from "../models";
 import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
@@ -56,23 +55,15 @@ const Label = styled.p`
   text-align: center;
 `;
 
-function PlayerRegistration() {
+function Registration() {
   const navigate = useNavigate();
 
-  const [playerOne, setPlayerOne] = useState<Player>({
-    name: "",
-    imgUrl: "",
-  });
+  const { players, updatePlayerName } = useGameState();
 
-  const [playerTwo, setPlayerTwo] = useState<Player>({
-    name: "",
-    imgUrl: "",
-  });
+  const playerOne = players[PLAYERS.PLAYER_ONE];
+  const playerTwo = players[PLAYERS.PLAYER_TWO];
 
   function handleSubmit() {
-    const data = { playerOne, playerTwo };
-
-    localStorage.setItem("playerRegistrationData", JSON.stringify(data));
     navigate("/score_board");
   }
 
@@ -90,10 +81,7 @@ function PlayerRegistration() {
                 <Input
                   value={playerOne.name}
                   onChange={(value) => {
-                    setPlayerOne({
-                      name: value,
-                      imgUrl: "",
-                    });
+                    updatePlayerName(PLAYERS.PLAYER_ONE, value);
                   }}
                 />
               </InputWrapper>
@@ -102,10 +90,7 @@ function PlayerRegistration() {
                 <Input
                   value={playerTwo.name}
                   onChange={(value) => {
-                    setPlayerTwo({
-                      name: value,
-                      imgUrl: "",
-                    });
+                    updatePlayerName(PLAYERS.PLAYER_TWO, value);
                   }}
                 />
               </InputWrapper>
@@ -120,4 +105,4 @@ function PlayerRegistration() {
   );
 }
 
-export default PlayerRegistration;
+export default Registration;
