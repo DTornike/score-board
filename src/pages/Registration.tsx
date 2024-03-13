@@ -82,7 +82,7 @@ function Registration() {
     <Layout>
       <div>
         <Title>
-          {import.meta.env.VITE_PROJECT_NAME}
+          {import.meta.env.VITE_PROJECT_NAME ?? "No Name"}
         </Title>
         <Container>
           <RegistrationForm>
