@@ -55,6 +55,14 @@ const Label = styled.p`
   text-align: center;
 `;
 
+const Title = styled.p`
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  color: #000;
+  text-align: center;
+`;
+
 function Registration() {
   const navigate = useNavigate();
 
@@ -73,6 +81,9 @@ function Registration() {
   return (
     <Layout>
       <div>
+        <Title>
+          {import.meta.env.VITE_PROJECT_NAME}
+        </Title>
         <Container>
           <RegistrationForm>
             <InputContainer>
